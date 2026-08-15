@@ -12,8 +12,8 @@ This roadmap records intended maintenance work. It is not a promise of dates or 
 - [x] Test Python 3.11, 3.12, and 3.13 in CI.
 - [x] Provide a reusable composite GitHub Action.
 - [x] Document scoring and release procedures.
-- [ ] Publish the first tagged GitHub Release.
-- [ ] Validate tagged installation in a clean environment.
+- [x] Publish the first tagged GitHub Release.
+- [x] Validate tagged installation in a clean environment.
 
 ## v0.2 — Better Evidence Transparency
 
