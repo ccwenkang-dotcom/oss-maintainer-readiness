@@ -39,3 +39,22 @@ jobs:
         with:
           name: python-distributions
           path: dist/*
+
+  action-smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run the local composite action
+        uses: ./
+        with:
+          repository: ccwenkang-dotcom/oss-maintainer-readiness
+          output: reports/self
+      - name: Verify generated reports
+        shell: bash
+        run: |
+          test -s reports/self.md
+          test -s reports/self.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: self-readiness-report
+          path: reports/self.*
