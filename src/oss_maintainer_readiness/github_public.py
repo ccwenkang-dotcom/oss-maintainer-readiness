@@ -86,6 +86,7 @@ def collect_public_github_evidence(repo_ref: str, timeout: float = 10.0) -> Evid
     )
     release_count = _count_list(f"{repo_url}/releases?per_page=1", timeout)
     tag_count = _count_list(f"{repo_url}/tags?per_page=1", timeout)
+    issue_or_pr_activity_count = _count_list(f"{repo_url}/issues?state=all&per_page=1", timeout)
     original_commits = _count_list(f"{repo_url}/commits?author={owner}&per_page=100", timeout)
     return evidence_from_repo_payload(
         payload,
@@ -95,6 +96,7 @@ def collect_public_github_evidence(repo_ref: str, timeout: float = 10.0) -> Evid
         contributing_exists=contributing_exists,
         security_policy_exists=security_policy_exists,
         release_count=max(release_count, tag_count),
+        issue_or_pr_activity_count=issue_or_pr_activity_count,
         original_commits=original_commits,
     )
 
@@ -108,6 +110,7 @@ def evidence_from_repo_payload(
     contributing_exists: bool = False,
     security_policy_exists: bool = False,
     release_count: int,
+    issue_or_pr_activity_count: int | None = None,
     original_commits: int = 0,
 ) -> Evidence:
     full_name = str(payload.get("full_name", "unknown/unknown"))
@@ -115,6 +118,7 @@ def evidence_from_repo_payload(
     license_payload = payload.get("license")
     pushed_at = payload.get("pushed_at")
     open_issues = int(payload.get("open_issues_count") or 0)
+    activity_count = open_issues if issue_or_pr_activity_count is None else issue_or_pr_activity_count
     stars = int(payload.get("stargazers_count") or 0)
     forks = int(payload.get("forks_count") or 0)
     return Evidence(
@@ -132,7 +136,7 @@ def evidence_from_repo_payload(
         has_ci=ci_exists,
         has_recent_commits=_is_recent_iso8601(pushed_at),
         has_releases=release_count > 0,
-        has_issue_or_pr_activity=open_issues > 0,
+        has_issue_or_pr_activity=activity_count > 0,
         has_contributing=contributing_exists,
         has_security_policy=security_policy_exists,
         stars=stars,
