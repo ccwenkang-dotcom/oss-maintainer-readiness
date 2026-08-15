@@ -1,0 +1,60 @@
+name: OSS Maintainer Readiness
+
+description: Generate Markdown and JSON readiness reports for a public GitHub repository.
+author: ccwenkang-dotcom
+
+branding:
+  icon: check-circle
+  color: blue
+
+inputs:
+  repository:
+    description: Public GitHub repository in owner/name form. Defaults to the current repository.
+    required: false
+    default: ""
+  output:
+    description: Output path stem for the generated .md and .json files.
+    required: false
+    default: reports/oss-readiness
+
+outputs:
+  markdown-report:
+    description: Path to the generated Markdown report.
+    value: ${{ steps.report-paths.outputs.markdown }}
+  json-report:
+    description: Path to the generated JSON report.
+    value: ${{ steps.report-paths.outputs.json }}
+
+runs:
+  using: composite
+  steps:
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.13"
+
+    - name: Install OSS Maintainer Readiness Checker
+      shell: bash
+      run: python -m pip install "${{ github.action_path }}"
+
+    - name: Generate readiness report
+      id: generate-report
+      shell: bash
+      env:
+        INPUT_REPOSITORY: ${{ inputs.repository }}
+        INPUT_OUTPUT: ${{ inputs.output }}
+      run: |
+        repository="$INPUT_REPOSITORY"
+        if [ -z "$repository" ]; then
+          repository="$GITHUB_REPOSITORY"
+        fi
+        oss-readiness check --repo "$repository" --out "$INPUT_OUTPUT"
+
+    - name: Export report paths
+      id: report-paths
+      shell: bash
+      env:
+        INPUT_OUTPUT: ${{ inputs.output }}
+      run: |
+        echo "markdown=${INPUT_OUTPUT}.md" >> "$GITHUB_OUTPUT"
+        echo "json=${INPUT_OUTPUT}.json" >> "$GITHUB_OUTPUT"

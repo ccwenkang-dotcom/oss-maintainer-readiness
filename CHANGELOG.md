@@ -1,9 +1,15 @@
 # Changelog
 
-## 0.1.0
+All notable changes to this project are documented here.
 
-- Initial local-first readiness checker.
-- Added public GitHub and local repository evidence collection.
-- Added deterministic red/yellow/green scoring.
-- Added Markdown and JSON reports.
-- Added fail-closed blocked-marker safety guard.
+## 0.1.0 - 2026-08-15
+
+- Added local repository and public GitHub evidence collection.
+- Added deterministic red/yellow/green scoring with documented hard gates.
+- Added Markdown and JSON report generation.
+- Added explicit fork handling and original-maintainer activity checks.
+- Added fail-closed blocked-marker safety handling.
+- Added tests across Python 3.11, 3.12, and 3.13.
+- Added CI validation for source and wheel distributions.
+- Added a reusable composite GitHub Action.
+- Added maintainer ownership, roadmap, scoring, contribution, security, and release documentation.

@@ -12,6 +12,13 @@ license = "MIT"
 authors = [
   { name = "ccwenkang-dotcom" }
 ]
+keywords = [
+  "open-source",
+  "maintainer",
+  "repository-health",
+  "github",
+  "cli",
+]
 classifiers = [
   "Development Status :: 3 - Alpha",
   "Environment :: Console",
@@ -24,13 +31,23 @@ classifiers = [
   "Topic :: Software Development :: Quality Assurance",
 ]
 
+[project.urls]
+Homepage = "https://github.com/ccwenkang-dotcom/oss-maintainer-readiness"
+Repository = "https://github.com/ccwenkang-dotcom/oss-maintainer-readiness"
+Issues = "https://github.com/ccwenkang-dotcom/oss-maintainer-readiness/issues"
+Changelog = "https://github.com/ccwenkang-dotcom/oss-maintainer-readiness/blob/main/CHANGELOG.md"
+
 [project.scripts]
 oss-readiness = "oss_maintainer_readiness.cli:main"
 
 [project.optional-dependencies]
 dev = [
+  "build>=1.2",
   "pytest>=8.0",
 ]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/oss_maintainer_readiness"]
 
 [tool.pytest.ini_options]
 addopts = "-q"
