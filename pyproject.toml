@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "oss-maintainer-readiness"
-version = "0.1.0"
+version = "0.1.1"
 description = "Local-first OSS maintainer readiness checker for public repository evidence."
 readme = "README.md"
 requires-python = ">=3.11"

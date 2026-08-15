@@ -1,7 +1,7 @@
 # OSS Maintainer Readiness Checker
 
 [![CI](https://github.com/ccwenkang-dotcom/oss-maintainer-readiness/actions/workflows/ci.yml/badge.svg)](https://github.com/ccwenkang-dotcom/oss-maintainer-readiness/actions/workflows/ci.yml)
-[![Release](https://img.shields.io/github/v/release/ccwenkang-dotcom/oss-maintainer-readiness)](https://github.com/ccwenkang-dotcom/oss-maintainer-readiness/releases/tag/v0.1.0)
+[![Release](https://img.shields.io/github/v/release/ccwenkang-dotcom/oss-maintainer-readiness)](https://github.com/ccwenkang-dotcom/oss-maintainer-readiness/releases/tag/v0.1.1)
 
 A local-first command-line tool and reusable GitHub Action for checking the public evidence that an open-source repository is ready for sustained maintenance.
 
@@ -31,7 +31,7 @@ The scoring model is documented in [docs/SCORING.md](docs/SCORING.md).
 ### Install the verified release from GitHub
 
 ```bash
-python -m pip install "git+https://github.com/ccwenkang-dotcom/oss-maintainer-readiness.git@v0.1.0"
+python -m pip install "git+https://github.com/ccwenkang-dotcom/oss-maintainer-readiness.git@v0.1.1"
 ```
 
 ### Install for local development
@@ -84,7 +84,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: ccwenkang-dotcom/oss-maintainer-readiness@v0.1.0
+      - uses: ccwenkang-dotcom/oss-maintainer-readiness@v0.1.1
         with:
           repository: ${{ github.repository }}
           output: reports/oss-readiness
