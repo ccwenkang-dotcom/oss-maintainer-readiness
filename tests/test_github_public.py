@@ -36,7 +36,7 @@ def test_maps_repo_payload_to_evidence():
         "fork": False,
         "stargazers_count": 12,
         "forks_count": 3,
-        "open_issues_count": 2,
+        "open_issues_count": 0,
         "pushed_at": "2026-06-20T00:00:00Z",
         "license": {"spdx_id": "MIT"},
     }
@@ -49,6 +49,7 @@ def test_maps_repo_payload_to_evidence():
         contributing_exists=True,
         security_policy_exists=True,
         release_count=1,
+        issue_or_pr_activity_count=1,
     )
 
     assert evidence.owner == "example"
@@ -61,8 +62,27 @@ def test_maps_repo_payload_to_evidence():
     assert evidence.has_contributing is True
     assert evidence.has_security_policy is True
     assert evidence.has_releases is True
+    assert evidence.has_issue_or_pr_activity is True
     assert evidence.stars == 12
     assert evidence.forks == 3
+
+
+def test_repo_payload_falls_back_to_open_issue_count():
+    payload = {
+        "name": "maintainer-toolkit",
+        "full_name": "example/maintainer-toolkit",
+        "private": False,
+        "open_issues_count": 1,
+    }
+
+    evidence = evidence_from_repo_payload(
+        payload,
+        readme_exists=False,
+        ci_exists=False,
+        release_count=0,
+    )
+
+    assert evidence.has_issue_or_pr_activity is True
 
 
 def test_collect_public_github_evidence_maps_404(monkeypatch):
@@ -115,6 +135,8 @@ def test_collect_public_github_evidence_uses_public_api(monkeypatch):
             return []
         if url.endswith("/tags?per_page=1"):
             return [{"name": "v0.1.0"}]
+        if url.endswith("/issues?state=all&per_page=1"):
+            return [{"number": 7, "state": "closed", "pull_request": {}}]
         if url.endswith("/commits?author=example&per_page=100"):
             return [{"sha": "abc"}]
         raise AssertionError(f"unexpected url {url}")
@@ -130,4 +152,5 @@ def test_collect_public_github_evidence_uses_public_api(monkeypatch):
     assert evidence.has_contributing is True
     assert evidence.has_security_policy is True
     assert evidence.has_releases is True
+    assert evidence.has_issue_or_pr_activity is True
     assert all("token" not in json.dumps(call).lower() for call in calls)
