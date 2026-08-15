@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented here.
 
+## 0.1.1 - 2026-08-15
+
+- Fixed public GitHub evidence collection so closed issues and merged pull requests count as maintenance activity.
+- Added regression coverage for historical issue and pull-request activity.
+- Updated release automation to publish when the package version changes on `main`.
+
 ## 0.1.0 - 2026-08-15
 
 - Added local repository and public GitHub evidence collection.
